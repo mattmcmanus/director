@@ -1,7 +1,7 @@
 
 
 //
-// Generated on Fri Dec 27 2013 12:02:11 GMT-0500 (EST) by Nodejitsu, Inc (Using Codesurgeon).
+// Generated on Sun Jan 26 2014 21:58:12 GMT-0500 (EST) by Nodejitsu, Inc (Using Codesurgeon).
 // Version 1.2.2
 //
 
@@ -260,6 +260,7 @@ Router.prototype.setRoute = function (i, v, val) {
 // insert a callback that will only occur once per the matched route.
 //
 Router.prototype.insertEx = function(method, path, route, parent) {
+  var self = this;
   if (method === "once") {
     method = "on";
     route = function(route) {
@@ -267,7 +268,11 @@ Router.prototype.insertEx = function(method, path, route, parent) {
       return function() {
         if (once) return;
         once = true;
-        return route.apply(this, arguments);
+        if (self.resource && typeof route === 'string') {
+          return self.resource[route].apply(this, arguments);
+        } else {
+          return route.apply(this, arguments);
+        }
       };
     }(route);
   }

@@ -476,7 +476,7 @@ createTest('resource object.', {
     '/b/:c': {
       on: 'f1'
     },
-    on: 'f2'
+    once: 'f2'
   },
   '/d': {
     on: ['f1', 'f2']
